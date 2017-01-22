@@ -1,11 +1,13 @@
 package com.mycompany.workedtimemvn;
 
-import java.awt.event.MouseListener;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -24,6 +26,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 public class MainSceneController implements Initializable {
     //Instance variables
@@ -44,16 +48,14 @@ public class MainSceneController implements Initializable {
     void handleAddCityButton(ActionEvent event) {
         
         String newCity = newCityTextField.getText();
-        String newCityRc = "\n"+newCity;
-        String path = loader.getResource("data/cities.txt").getPath().substring(1);
         
-        //Add city to cities.txt file
         try {
-            Files.write(Paths.get(path), newCityRc.getBytes(), StandardOpenOption.APPEND);
-        }catch (IOException e) {
-            System.out.println("No such file!!!!!!!!!");
+            FileWriter out = new FileWriter("cities.txt");
+            out.write("Hello!!!");
+        } catch (IOException ex) {
+            Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //End
+        
         
         cityChoiseBox.getItems().add(newCity);
         
@@ -69,22 +71,17 @@ public class MainSceneController implements Initializable {
         
 
         //Read file cities.txt from resourses and the to list
-        String s = "";
-        StringBuilder sb = new StringBuilder();
+        String s = null;
+        InputStream is = loader.getResourceAsStream("data/cities.txt");
         try {
-            File file = new File(loader.getResource("data/cities.txt").toURI());
-            Scanner scanner = new Scanner(file);
-            while(scanner.hasNextLine()){
-                String line = scanner.nextLine();
-                list.add(line);
-            }
-            scanner.close();
-        } catch (URISyntaxException ex) {
-            Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (FileNotFoundException ex) {
+            s = IOUtils.toString(is, "UTF-8");
+        } catch (IOException ex) {
             Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        s = sb.toString();
+        String [] cities = s.split(" ");
+        for(int i = 0; i < cities.length; i++){
+            list.add(cities[i]);
+        }
         //End
         
         //Assign list to choise box
@@ -95,7 +92,7 @@ public class MainSceneController implements Initializable {
         cityChoiseBox.addEventHandler(ActionEvent.ACTION, new EventHandler<ActionEvent>(){
             @Override
             public void handle(ActionEvent event) {
-                if(cityChoiseBox.getValue().equals("...New City...")){
+                if(cityChoiseBox.getValue().equals("...NewCity...")){
                 newCityTextField.setVisible(true);
                 addCityButton.setVisible(true);
                 }else{

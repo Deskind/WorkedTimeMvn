@@ -1,4 +1,1 @@
-...New City...
-Minsk
-Molodechno
-Klimovichi
+...NewCity... Minsk Molodechno Klimovichi
