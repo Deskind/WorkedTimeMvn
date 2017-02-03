@@ -1,5 +1,7 @@
 package com.mycompany.workedtimemvn;
 
+import com.mycompany.workedtimemvn.entities.TimeUnit;
+import com.mycompany.workedtimemvn.utilities.HibernateUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,6 +21,8 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.TextField;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 public class MainSceneController implements Initializable {
     //Instance variables
@@ -56,6 +60,26 @@ public class MainSceneController implements Initializable {
         newCityTextField.setVisible(false);
         addCityButton.setVisible(false);
         //end
+        
+        
+        //Test
+        //Hibernate
+        //connection
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.getTransaction().begin();
+        
+        //Create an object 
+        TimeUnit timeUnit = new TimeUnit();
+        timeUnit.setCity("Molodechno");
+        
+        session.save(timeUnit);
+        
+        System.out.println("HUMAN SAVED IN DATABASE!!!");
+        
+        session.getTransaction().commit();
+        
+        sessionFactory.close();
     }
     
    
