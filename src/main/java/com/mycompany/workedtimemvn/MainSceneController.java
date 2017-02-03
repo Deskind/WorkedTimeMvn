@@ -1,5 +1,6 @@
 package com.mycompany.workedtimemvn;
 
+import com.jfoenix.controls.JFXDatePicker;
 import com.mycompany.workedtimemvn.entities.TimeUnit;
 import com.mycompany.workedtimemvn.utilities.HibernateUtil;
 import java.io.File;
@@ -7,6 +8,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +21,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -41,6 +45,15 @@ public class MainSceneController implements Initializable {
     private Button addCityButton;
 
     @FXML
+    private DatePicker date;
+
+    @FXML
+    private JFXDatePicker beginDate;
+
+    @FXML
+    private JFXDatePicker finishDate;
+
+    @FXML
     void handleAddCityButton(ActionEvent event) {
         //Get value from text field
         String newCity = newCityTextField.getText();
@@ -55,6 +68,8 @@ public class MainSceneController implements Initializable {
         //Add new city to choise box
         cityChoiseBox.getItems().add(newCity);
         //end
+        
+        LocalDate date_local = date.getValue();
         
         //Make field and button unvisible
         newCityTextField.setVisible(false);
@@ -71,6 +86,7 @@ public class MainSceneController implements Initializable {
         
         //Create an object 
         TimeUnit timeUnit = new TimeUnit();
+        timeUnit.setDate(new Date());
         timeUnit.setCity("Molodechno");
         
         session.save(timeUnit);
