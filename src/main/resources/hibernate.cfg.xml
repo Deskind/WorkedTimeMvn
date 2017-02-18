@@ -19,9 +19,10 @@
       root
    </property>
    <property name="hibernate.connection.password"></property>
-   <property name="hibernate.hbm2ddl.auto">create</property>
+   <property name="hibernate.hbm2ddl.auto">update</property>
 
    <!-- List of XML mapping files -->
    <mapping class="com.mycompany.workedtimemvn.entities.TimeUnit"/>
+   <mapping class="com.mycompany.workedtimemvn.entities.City"/>
    </session-factory>
 </hibernate-configuration>

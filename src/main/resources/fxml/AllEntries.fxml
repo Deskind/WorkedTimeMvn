@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="AnchorPane" prefHeight="485.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.workedtimemvn.AllEntriesController">
+   <children>
+      <TableView fx:id="timeUnitTable" layoutX="46.0" layoutY="34.0" prefHeight="265.0" prefWidth="554.0">
+        <columns>
+          <TableColumn fx:id="id" prefWidth="75.0" text="id" />
+          <TableColumn fx:id="date" prefWidth="75.0" text="date" />
+            <TableColumn fx:id="city" prefWidth="75.0" text="city" />
+            <TableColumn fx:id="beginTime" prefWidth="108.0" text="begin time" />
+            <TableColumn fx:id="finishTime" prefWidth="106.0" text="finish time" />
+            <TableColumn fx:id="result" prefWidth="117.0" text="result" />
+        </columns>
+      </TableView>
+   </children>
+</AnchorPane>

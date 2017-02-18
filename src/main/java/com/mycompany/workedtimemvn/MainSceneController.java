@@ -1,15 +1,20 @@
 package com.mycompany.workedtimemvn;
 
 import com.jfoenix.controls.JFXDatePicker;
+import com.mycompany.workedtimemvn.entities.City;
 import com.mycompany.workedtimemvn.entities.TimeUnit;
 import com.mycompany.workedtimemvn.utilities.HibernateUtil;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,11 +23,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.hibernate.Session;
@@ -48,36 +59,52 @@ public class MainSceneController implements Initializable {
     private DatePicker date;
 
     @FXML
-    private JFXDatePicker beginDate;
+    private JFXDatePicker beginTime;
 
     @FXML
-    private JFXDatePicker finishDate;
-
+    private JFXDatePicker finishTime;
+    
     @FXML
-    void handleAddCityButton(ActionEvent event) {
-        //Get value from text field
-        String newCity = newCityTextField.getText();
-        //Trying to write new city to cities.txt
+    private Button doneBtn;
+    
+    @FXML
+    private Button tableBtn;
+    
+    //Handlers
+    @FXML
+    void handleTableBtn(ActionEvent event) {
+//        URL url = getClass().getClassLoader().getResource("AllEntries.fxml");
+//        System.out.println("The url is : " + url.toString());
         try {
-            FileUtils.writeStringToFile(cities, newCity+" ", true);
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getClassLoader().getResource("fxml/AllEntries.fxml"));
+            Parent root1 = (Parent) fxmlLoader.load();
+            Stage stage = new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.initStyle(StageStyle.DECORATED);
+            stage.setTitle("All entries");
+            stage.setScene(new Scene(root1));
+            stage.show();
         } catch (IOException ex) {
             Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        //end
-        
-        //Add new city to choise box
-        cityChoiseBox.getItems().add(newCity);
-        //end
-        
+    }
+
+    @FXML
+    void handleDoneBtn(ActionEvent event) {
+        //Get date
         LocalDate date_local = date.getValue();
         
-        //Make field and button unvisible
-        newCityTextField.setVisible(false);
-        addCityButton.setVisible(false);
-        //end
+        //Get begin time
+        LocalTime bTime = beginTime.getTime();
         
+        //Get finish time
+        LocalTime fTime = finishTime.getTime();
         
-        //Test
+        //Get result time
+        int rTime = (fTime.toSecondOfDay()-bTime.toSecondOfDay());
+        Double dResult = ((double)rTime)/60/60;
+        
+        //Make
         //Hibernate
         //connection
         SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
@@ -86,9 +113,13 @@ public class MainSceneController implements Initializable {
         
         //Create an object 
         TimeUnit timeUnit = new TimeUnit();
-        timeUnit.setDate(new Date());
-        timeUnit.setCity("Molodechno");
+        timeUnit.setDate(date_local.toString());
+        timeUnit.setCity(cityChoiseBox.getValue());
+        timeUnit.setBeginTime(bTime.toString());
+        timeUnit.setFinishTime(fTime.toString());
+        timeUnit.setResult(dResult.toString());
         
+        //Save
         session.save(timeUnit);
         
         System.out.println("HUMAN SAVED IN DATABASE!!!");
@@ -97,27 +128,63 @@ public class MainSceneController implements Initializable {
         
         sessionFactory.close();
     }
+
+    @FXML
+    void handleAddCityButton(ActionEvent event) {
+        //Get value from text field
+        String newCity = newCityTextField.getText();
+        //End
+        
+        //Trying to write new city to database
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        session.getTransaction().begin();
+        
+            //Make city object 
+            City city = new City();
+            city.setCityName(newCity);
+            //End
+            
+            //Persist city
+            session.save(city);
+            session.getTransaction().commit();
+            sessionFactory.close();
+            //End
+            
+        //end
+        
+        //Add new city to choise box
+        cityChoiseBox.getItems().add(newCity);
+        //end
+        
+        //Make field and button unvisible
+        newCityTextField.setVisible(false);
+        addCityButton.setVisible(false);
+        //end
+        
+        //Set new value to choicebox
+        cityChoiseBox.setValue(newCity);
+        //End
+
+    }
     
-   
+    //Initialize method
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         //Add initial entry to list
         list.add("...NewCity...");
         //end
-        
-        //Read file cities.txt from resourses and the to list if file exists
-        try {
-            String s = IOUtils.toString(new FileInputStream(cities));
-            String[] arr = s.split(" ");
-            for(int i = 0 ; i < arr.length; i++){
-                list.add(arr[i]);
+
+        //Read cities from database worktime/city
+        SessionFactory sessionFactory = HibernateUtil.getSessionFactory();
+        Session session = sessionFactory.openSession();
+        List<City> l = session.createCriteria(City.class).list();
+        if(l.size()>0){
+            for(City c : l){
+                list.add(c.getCityName());
             }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(MainSceneController.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        session.close();
         //End
         
         //Assign list to choise box

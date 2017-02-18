@@ -1,5 +1,6 @@
 package com.mycompany.workedtimemvn;
 
+import com.mycompany.workedtimemvn.utilities.MysqlUtil;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +21,8 @@ public class MainApp extends Application {
         stage.setTitle("JavaFX and Maven");
         stage.setScene(scene);
         stage.show();
+        
+        MysqlUtil.dataBasePrepare();
     }
     
     public static void main(String[] args) {

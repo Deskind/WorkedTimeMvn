@@ -1,26 +1,31 @@
 package com.mycompany.workedtimemvn.entities;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 
 @Entity
 public class TimeUnit {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
     @Column
-    private Date date;
+    private String date;
     @Column
     private String city;
     @Column
-    private Date beginDate;
+    private String beginTime;
     @Column
-    private Date finishDate;
+    private String finishTime;
     @Column 
-    private Date result;
+    private String result;
     
     
     
@@ -33,14 +38,27 @@ public class TimeUnit {
     
     //Constructor and getters and setters
     
+    
+
+    public TimeUnit(long id, String date, String city, String beginTime, String finishTime, String result) {
+        this.id = id;
+        this.date = date;
+        this.city = city;
+        this.beginTime = beginTime;
+        this.finishTime = finishTime;
+        this.result = result;
+    }
+
     public TimeUnit() {
     }
+    
+    
 
     public long getId() {
         return id;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
@@ -48,15 +66,15 @@ public class TimeUnit {
         return city;
     }
 
-    public Date getBeginDate() {
-        return beginDate;
+    public String getBeginTime() {
+        return beginTime;
     }
 
-    public Date getFinishDate() {
-        return finishDate;
+    public String getFinishTime() {
+        return finishTime;
     }
 
-    public Date getResult() {
+    public String getResult() {
         return result;
     }
 
@@ -64,7 +82,7 @@ public class TimeUnit {
         this.id = id;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
     }
 
@@ -72,19 +90,18 @@ public class TimeUnit {
         this.city = city;
     }
 
-    public void setBeginDate(Date beginDate) {
-        this.beginDate = beginDate;
+    public void setBeginTime(String beginTime) {
+        this.beginTime = beginTime;
     }
 
-    public void setFinishDate(Date finishDate) {
-        this.finishDate = finishDate;
+    public void setFinishTime(String finishTime) {
+        this.finishTime = finishTime;
     }
 
-    public void setResult(Date result) {
+    public void setResult(String result) {
         this.result = result;
     }
 
-    
     
     
 }
