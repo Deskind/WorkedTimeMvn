@@ -1,10 +1,9 @@
 package com.mycompany.workedtimemvn.entities;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,6 +25,10 @@ public class TimeUnit {
     private String finishTime;
     @Column 
     private String result;
+    @Column(columnDefinition = "enum('BUSINESS_TRIP','ON_PLACE')")
+    @Enumerated(EnumType.STRING)
+    private UnitType unitType;
+    
     
     
     
@@ -37,22 +40,19 @@ public class TimeUnit {
     
     
     //Constructor and getters and setters
-    
-    
 
-    public TimeUnit(long id, String date, String city, String beginTime, String finishTime, String result) {
+    public TimeUnit() {
+    }
+
+    public TimeUnit(long id, String date, String city, String beginTime, String finishTime, String result, UnitType unitType) {
         this.id = id;
         this.date = date;
         this.city = city;
         this.beginTime = beginTime;
         this.finishTime = finishTime;
         this.result = result;
+        this.unitType = unitType;
     }
-
-    public TimeUnit() {
-    }
-    
-    
 
     public long getId() {
         return id;
@@ -76,6 +76,10 @@ public class TimeUnit {
 
     public String getResult() {
         return result;
+    }
+
+    public UnitType getUnitType() {
+        return unitType;
     }
 
     public void setId(long id) {
@@ -102,6 +106,9 @@ public class TimeUnit {
         this.result = result;
     }
 
+    public void setUnitType(UnitType unitType) {
+        this.unitType = unitType;
+    }
     
     
 }

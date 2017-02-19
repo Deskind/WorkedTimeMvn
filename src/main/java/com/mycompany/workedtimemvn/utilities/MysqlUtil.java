@@ -20,13 +20,12 @@ import java.util.logging.Logger;
 public class MysqlUtil {
     private static String jdbcDriver = "com.mysql.jdbc.Driver";
     private static String dbAddress = "jdbc:mysql://localhost:3306?serverTimezone=UTC";
-    private static String dbName = "worktime";
     private static String userName = "root";
     private static String password = "";
     
     public static void dataBasePrepare(){
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName(jdbcDriver);
             Connection connection = DriverManager.getConnection(dbAddress, userName, password);
             Statement statement = connection.createStatement();
             statement.executeUpdate("create database if not exists worktime");

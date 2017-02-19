@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="AnchorPane" prefHeight="485.0" prefWidth="685.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.workedtimemvn.AllEntriesController">
+<AnchorPane id="AnchorPane" prefHeight="485.0" prefWidth="879.0" xmlns="http://javafx.com/javafx/8.0.102" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mycompany.workedtimemvn.AllEntriesController">
    <children>
-      <TableView fx:id="timeUnitTable" layoutX="46.0" layoutY="34.0" prefHeight="265.0" prefWidth="554.0">
+      <TableView fx:id="timeUnitTable" layoutX="46.0" layoutY="34.0" prefHeight="265.0" prefWidth="683.0">
         <columns>
           <TableColumn fx:id="id" prefWidth="75.0" text="id" />
           <TableColumn fx:id="date" prefWidth="75.0" text="date" />
@@ -14,7 +15,9 @@
             <TableColumn fx:id="beginTime" prefWidth="108.0" text="begin time" />
             <TableColumn fx:id="finishTime" prefWidth="106.0" text="finish time" />
             <TableColumn fx:id="result" prefWidth="117.0" text="result" />
+            <TableColumn fx:id="unitType" prefWidth="126.0" text="unitType" />
         </columns>
       </TableView>
+      <Button fx:id="sendReport" layoutX="355.0" layoutY="343.0" mnemonicParsing="false" onAction="#handleSendReport" text="Send report" />
    </children>
 </AnchorPane>

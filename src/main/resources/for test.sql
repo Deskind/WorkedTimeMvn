@@ -5,4 +5,8 @@ drop database if exists worktime;
 show databases;
 use worktime;
 
+show tables;
+
 select * from timeunit;
+
+show columns from timeunit;

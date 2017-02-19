@@ -1,19 +1,16 @@
 package com.mycompany.workedtimemvn;
 
+import com.jfoenix.controls.JFXCheckBox;
 import com.jfoenix.controls.JFXDatePicker;
 import com.mycompany.workedtimemvn.entities.City;
 import com.mycompany.workedtimemvn.entities.TimeUnit;
+import com.mycompany.workedtimemvn.entities.UnitType;
 import com.mycompany.workedtimemvn.utilities.HibernateUtil;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -34,8 +31,6 @@ import javafx.scene.control.TextField;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -69,6 +64,12 @@ public class MainSceneController implements Initializable {
     
     @FXML
     private Button tableBtn;
+    
+    @FXML
+    private JFXCheckBox businessTripCheckBox;
+
+    @FXML
+    private JFXCheckBox onPlaceCheckBox;
     
     //Handlers
     @FXML
@@ -118,6 +119,13 @@ public class MainSceneController implements Initializable {
         timeUnit.setBeginTime(bTime.toString());
         timeUnit.setFinishTime(fTime.toString());
         timeUnit.setResult(dResult.toString());
+        
+            //Get checkbox value
+            if(businessTripCheckBox.isSelected()){
+                timeUnit.setUnitType(UnitType.BUSINESS_TRIP);
+            }else if(onPlaceCheckBox.isSelected()){
+                timeUnit.setUnitType(UnitType.ON_PLACE);
+            }
         
         //Save
         session.save(timeUnit);
