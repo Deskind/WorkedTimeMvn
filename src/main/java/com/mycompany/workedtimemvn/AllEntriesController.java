@@ -8,6 +8,7 @@ package com.mycompany.workedtimemvn;
 import com.mycompany.workedtimemvn.entities.TimeUnit;
 import com.mycompany.workedtimemvn.entities.UnitType;
 import com.mycompany.workedtimemvn.utilities.HibernateUtil;
+import com.mycompany.workedtimemvn.utilities.MailUtil;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -23,6 +24,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.WritableImage;
 import javax.imageio.ImageIO;
@@ -65,6 +67,12 @@ public class AllEntriesController implements Initializable {
     
     @FXML
     private Button sendReport;
+    
+    @FXML
+    private TextField toEmail;
+
+    @FXML
+    private TextField fromEmail;
 
     //Handlers
     @FXML
@@ -78,6 +86,12 @@ public class AllEntriesController implements Initializable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
+        //Send and email with png image
+        String from = fromEmail.getText();
+        String to = toEmail.getText();
+        MailUtil.sendReportAsEmail(from, to);
+
     }
  
     

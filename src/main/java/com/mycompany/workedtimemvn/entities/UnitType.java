@@ -5,10 +5,6 @@
  */
 package com.mycompany.workedtimemvn.entities;
 
-/**
- *
- * @author Desk1nd
- */
 public enum UnitType {
     BUSINESS_TRIP, ON_PLACE
 }

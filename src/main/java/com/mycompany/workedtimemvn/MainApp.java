@@ -13,6 +13,9 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
+        //Prepare database
+        MysqlUtil.dataBasePrepare();
+        
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainScene.fxml"));
         
         Scene scene = new Scene(root);
@@ -21,8 +24,6 @@ public class MainApp extends Application {
         stage.setTitle("JavaFX and Maven");
         stage.setScene(scene);
         stage.show();
-        
-        MysqlUtil.dataBasePrepare();
     }
     
     public static void main(String[] args) {
